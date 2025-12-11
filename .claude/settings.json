@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./run_silent:*)",
+      "Bash(go run:*)"
+    ]
+  }
+}

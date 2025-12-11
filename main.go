@@ -15,20 +15,33 @@ import (
 	"time"
 )
 
+var (
+	Version   = "dev"
+	Commit    = ""
+	BuildDate = ""
+)
+
 const defaultTimeout = 5 * time.Minute
 
 func main() {
 	var (
-		description string
-		timeout     time.Duration
+		description    string
+		timeout        time.Duration
+		showVersion    bool
 	)
 
 	flag.StringVar(&description, "d", "", "description to show instead of command")
 	flag.DurationVar(&timeout, "t", defaultTimeout, "command timeout")
+	flag.BoolVar(&showVersion, "v", false, "show version and exit")
 	flag.Parse()
 
+	if showVersion {
+		printVersion()
+		os.Exit(0)
+	}
+
 	if flag.NArg() < 1 {
-		fmt.Fprintln(os.Stderr, "usage: run_silent [-d description] [-t timeout] <command> [args...]")
+		fmt.Fprintln(os.Stderr, "usage: run_silent [-d description] [-t timeout] [-v] <command> [args...]")
 		os.Exit(1)
 	}
 
@@ -113,4 +126,15 @@ func formatCommand(name string, args []string) string {
 	}
 
 	return strings.Join(parts, " ")
+}
+
+func printVersion() {
+	fmt.Printf("run_silent %s", Version)
+	if Commit != "" {
+		fmt.Printf(" (%s)", Commit)
+	}
+	if BuildDate != "" {
+		fmt.Printf(" built %s", BuildDate)
+	}
+	fmt.Println()
 }
