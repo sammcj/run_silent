@@ -20,6 +20,10 @@ make build
 run_silent [-d description] [-t timeout] <command> [args...]
 ```
 
+### Agent Rule
+
+> IMPORTANT: The `run_silent` command wrapper reduces token usage by only providing the exit status and any stderr. You MUST use run_silent to wrap any CLI command that you do not truly need to see all the output from such as installs, builds, tests, linting etc... example: `run_silent pnpm install`.
+
 ### Options
 
 - `-d` - Custom description (default: the command itself)
@@ -43,10 +47,6 @@ run_silent -t 2m make build
 # Chain multiple commands
 run_silent -d "Lint" golangci-lint run && run_silent -d "Test" go test ./...
 ```
-
-## Agent Rule
-
-> IMPORTANT: The `run_silent` command wrapper reduces token usage by only providing the exit status and any stderr. You MUST use run_silent to wrap any CLI command that you do not truly need to see all the output from such as installs, builds, tests, linting etc... example: `run_silent pnpm install`.
 
 ## Why
 
