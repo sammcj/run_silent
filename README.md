@@ -2,18 +2,6 @@
 
 Executes commands silently, showing output only on failure. Useful for AI coding agents to reduce token usage from noisy commands such as package managers, test and build scripts.
 
-## Install
-
-```bash
-go install github.com/sammcj/run_silent@latest
-```
-
-Or build from source:
-
-```bash
-make build
-```
-
 ## Usage
 
 ```bash
@@ -22,7 +10,36 @@ run_silent [-d description] [-t timeout] <command> [args...]
 
 ### Agent Rule
 
-> IMPORTANT: The `run_silent` command wrapper reduces token usage by only providing the exit status and any stderr. You MUST use run_silent to wrap any CLI command that you do not truly need to see all the output from such as installs, builds, tests, linting etc... example: `run_silent pnpm install`.
+Here is the rule I add to my AI coding agents (e.g. CLAUDE.md) to get them to use `run_silent`:
+
+```
+<CLI_COMMANDS>
+- IMPORTANT: Use the `run_silent` command wrapper (a command you run prefixed before the command you want to run) to reduce token usage by only providing the exit status and any stderr.
+  - You MUST use run_silent to wrap any bash / CLI commands unless you need to see all the stdout.
+  - Good commands to prefix with run_silent include package installs, builds, tests, linting etc...
+  - Examples:
+    - run_silent pnpm install
+    - run_silent cargo check
+    - run_silent make lint
+</CLI_COMMANDS>
+```
+
+The result being that the agent only sees output when there is an error (exit 1), saving valuable context tokens.
+
+_Tip: Set your linters to exit non-zero on warnings to catch those too!_
+
+## Install
+
+```bash
+go install github.com/sammcj/run_silent@HEAD
+```
+
+Or build from source:
+
+```bash
+make build
+make install
+```
 
 ### Options
 
