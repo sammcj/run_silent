@@ -14,7 +14,7 @@ Here is the rule I add to my AI coding agents (e.g. CLAUDE.md) to get them to us
 
 ```
 <CLI_COMMANDS>
-- IMPORTANT: Use the `run_silent` command wrapper (a command you run prefixed before the command you want to run) to reduce token usage by only providing the exit status and any stderr.
+- IMPORTANT: Use the `run_silent` command wrapper (a command you run prefixed before the command you want to run) to reduce token usage by buffering stdout/stderr and only showing them on non-zero exit.
   - You MUST use run_silent to wrap any bash / CLI commands unless you need to see all the stdout.
   - Good commands to prefix with run_silent include package installs, builds, tests, linting etc...
   - Examples:
@@ -24,7 +24,7 @@ Here is the rule I add to my AI coding agents (e.g. CLAUDE.md) to get them to us
 </CLI_COMMANDS>
 ```
 
-The result being that the agent only sees output when there is an error (exit 1), saving valuable context tokens.
+The result being that the agent only sees output on failure (non-zero exit), saving valuable context tokens.
 
 _Tip: Set your linters to exit non-zero on warnings to catch those too!_
 
